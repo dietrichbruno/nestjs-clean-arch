@@ -22,4 +22,12 @@ describe('UserEntity unit tests', () => {
 
     expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
+
+  it('Getters', () => {
+    expect(sut.name).toBe(props.name);
+    expect(sut.email).toBe(props.email);
+    expect(sut.password).toBe(props.password);
+    expect(sut.createdAt).toBe(sut.props.createdAt);
+    expect(sut.createdAt).toBeInstanceOf(Date);
+  });
 });
