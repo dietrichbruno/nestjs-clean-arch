@@ -26,4 +26,16 @@ describe('UserEntity unit tests', () => {
     expect(sut.createdAt).toBe(sut.props.createdAt);
     expect(sut.createdAt).toBeInstanceOf(Date);
   });
+
+  it('Update method', () => {
+    const newName = 'newName';
+    sut.update(newName);
+    expect(sut.name).toBe(newName);
+  });
+
+  it('UpdatePassword method', () => {
+    const newPassword = 'newPassword';
+    sut.updatePassword(newPassword);
+    expect(sut.password).toBe(newPassword);
+  });
 });
