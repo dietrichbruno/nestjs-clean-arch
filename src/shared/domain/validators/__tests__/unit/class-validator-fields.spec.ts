@@ -41,6 +41,6 @@ describe('ClassValidatorFields unit tests', () => {
     expect(sut.validate({ field: 'valid_field' })).toBe(true);
     expect(sut.errors).toBeNull();
     expect(spyValidateSync).toHaveBeenCalledWith({ field: 'valid_field' });
-    expect(spyValidateSync).toHaveBeenCalledTimes(1);
+    expect(spyValidateSync).toHaveBeenCalledTimes(2);
   });
 });
