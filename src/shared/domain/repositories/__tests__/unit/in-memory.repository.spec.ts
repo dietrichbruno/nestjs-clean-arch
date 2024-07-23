@@ -4,7 +4,7 @@ import { NotFoundError } from '@/shared/domain/errors/not-found-error';
 
 type StubEntityProps = {
   name: string;
-  price: string;
+  price: number;
 };
 
 class StubEntity extends Entity<StubEntityProps> {}
@@ -19,7 +19,7 @@ describe('InMemoryRepository unit tests', () => {
   });
 
   it('should insert an entity', async () => {
-    const entity = new StubEntity({ name: 'test name', price: '10.00' });
+    const entity = new StubEntity({ name: 'test name', price: 10 });
     await repository.insert(entity);
     expect(repository.items).toHaveLength(1);
     expect(repository.items[0]).toEqual(entity);
@@ -32,17 +32,39 @@ describe('InMemoryRepository unit tests', () => {
   });
 
   it('should find an entity by id', async () => {
-    const entity = new StubEntity({ name: 'Test', price: '10.00' });
+    const entity = new StubEntity({ name: 'Test', price: 10 });
     await repository.insert(entity);
     const foundEntity = await repository.findById(entity.id);
     expect(foundEntity.toJSON()).toEqual(entity.toJSON());
   });
 
   it('should find all entities', async () => {
-    const entity = new StubEntity({ name: 'Test', price: '10.00' });
+    const entity = new StubEntity({ name: 'Test', price: 10 });
     await repository.insert(entity);
     const entities = await repository.findAll();
     expect(entities).toHaveLength(1);
     expect(entities[0]).toEqual(entity);
+  });
+
+  it("should throw an error when trying to update an entity that doesn't exist", async () => {
+    const entity = new StubEntity({ name: 'Test', price: 10 });
+    await expect(repository.update(entity)).rejects.toThrow(
+      new NotFoundError('Entity not found'),
+    );
+  });
+
+  it('should update an entity', async () => {
+    const entity = new StubEntity({ name: 'Test', price: 10 });
+    await repository.insert(entity);
+    const updatedEntity = new StubEntity(
+      {
+        name: 'Updated Test',
+        price: 10,
+      },
+      entity.id,
+    );
+    await repository.update(updatedEntity);
+    const foundEntity = await repository.findById(entity.id);
+    expect(foundEntity.toJSON()).toEqual(updatedEntity.toJSON());
   });
 });
