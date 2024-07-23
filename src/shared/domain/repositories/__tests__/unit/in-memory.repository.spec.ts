@@ -31,6 +31,14 @@ describe('InMemoryRepository unit tests', () => {
     );
   });
 
+  it("should fail to find an entity by id when it doesn't exist", async () => {
+    const entity = new StubEntity({ name: 'Test', price: 10 });
+    await repository.insert(entity);
+    await expect(repository.findById('fakeId')).rejects.toThrow(
+      new NotFoundError('Entity not found'),
+    );
+  });
+
   it('should find an entity by id', async () => {
     const entity = new StubEntity({ name: 'Test', price: 10 });
     await repository.insert(entity);
@@ -66,5 +74,20 @@ describe('InMemoryRepository unit tests', () => {
     await repository.update(updatedEntity);
     const foundEntity = await repository.findById(entity.id);
     expect(foundEntity.toJSON()).toEqual(updatedEntity.toJSON());
+  });
+
+  it("should throw an error when trying to delete an entity that doesn't exist", async () => {
+    await expect(repository.delete('fakeId')).rejects.toThrow(
+      new NotFoundError('Entity not found'),
+    );
+  });
+
+  it('should delete an entity', async () => {
+    const entity = new StubEntity({ name: 'Test', price: 10 });
+    await repository.insert(entity);
+    await repository.delete(entity.id);
+    await expect(repository.findById(entity.id)).rejects.toThrow(
+      new NotFoundError('Entity not found'),
+    );
   });
 });
