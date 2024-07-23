@@ -19,7 +19,7 @@ describe('InMemoryRepository unit tests', () => {
   });
 
   it('should insert an entity', async () => {
-    const entity = new StubEntity({ name: 'Test', price: '10.00' });
+    const entity = new StubEntity({ name: 'test name', price: '10.00' });
     await repository.insert(entity);
     expect(repository.items).toHaveLength(1);
     expect(repository.items[0]).toEqual(entity);
@@ -29,6 +29,13 @@ describe('InMemoryRepository unit tests', () => {
     await expect(repository.findById('fakeId')).rejects.toThrow(
       new NotFoundError('Entity not found'),
     );
+  });
+
+  it('should find an entity by id', async () => {
+    const entity = new StubEntity({ name: 'Test', price: '10.00' });
+    await repository.insert(entity);
+    const foundEntity = await repository.findById(entity.id);
+    expect(foundEntity.toJSON()).toEqual(entity.toJSON());
   });
 
   it('should find all entities', async () => {
