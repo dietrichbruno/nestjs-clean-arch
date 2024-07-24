@@ -18,12 +18,12 @@ export class SearchParams {
   protected _sortDir: SortDirection;
   protected _filter: string;
 
-  constructor(props: SearchProps) {
-    this._page = props.page || 1;
-    this._perPage = props.perPage;
-    this._sort = props.sortBy || 'id';
-    this._sortDir = props.sortDir || 'asc';
-    this._filter = props.filter || '';
+  constructor(props: SearchProps = {}) {
+    this.page = props.page || 1;
+    this.perPage = props.perPage;
+    this.sort = props.sortBy || 'id';
+    this.sortDir = props.sortDir || 'asc';
+    this.filter = props.filter || '';
   }
 
   get page(): number {
@@ -46,17 +46,17 @@ export class SearchParams {
     return this._filter;
   }
 
-  set page(value: number) {
-    const _page = +value;
-    if (Number.isNaN(_page) || _page <= 0 || !Number.isInteger(_page)) {
-      this._page = 1;
+  private set page(value: number) {
+    let _page = +value;
+    if (Number.isNaN(_page) || _page <= 0 || parseInt(_page as any) !== _page) {
+      _page = 1;
     }
 
     this._page = _page;
   }
 
-  set perPage(perPage: number) {
-    let _perPage = +perPage;
+  set perPage(value: number) {
+    let _perPage = value === (true as any) ? this._perPage : +value;
 
     if (_perPage <= 0 || !Number.isInteger(_perPage)) {
       _perPage = this._perPage;
