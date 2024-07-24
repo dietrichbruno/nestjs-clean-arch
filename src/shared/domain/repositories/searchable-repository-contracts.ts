@@ -46,24 +46,43 @@ export class SearchParams {
     return this._filter;
   }
 
-  set page(page: number) {
-    this._page = page;
+  set page(value: number) {
+    const _page = +value;
+    if (Number.isNaN(_page) || _page <= 0 || !Number.isInteger(_page)) {
+      this._page = 1;
+    }
+
+    this._page = _page;
   }
 
   set perPage(perPage: number) {
-    this._perPage = perPage;
+    let _perPage = +perPage;
+
+    if (_perPage <= 0 || !Number.isInteger(_perPage)) {
+      _perPage = this._perPage;
+    }
+
+    this._perPage = _perPage;
   }
 
-  set sort(sort: string) {
-    this._sort = sort;
+  set sort(value: string) {
+    this._sort =
+      value === null || value === undefined || value === '' ? null : `${value}`;
   }
 
-  set sortDir(sortDir: SortDirection) {
-    this._sortDir = sortDir;
+  set sortDir(value: SortDirection) {
+    if (!this.sort) {
+      this._sortDir = null;
+      return;
+    }
+
+    const dir = `${value}`.toLowerCase() as SortDirection;
+    this._sortDir = dir !== 'asc' && dir !== 'desc' ? 'desc' : dir;
   }
 
-  set filter(filter: string) {
-    this._filter = filter;
+  set filter(value: string) {
+    this._filter =
+      value === null || value === undefined || value === '' ? null : `${value}`;
   }
 }
 
