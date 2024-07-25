@@ -1,4 +1,7 @@
-import { SearchParams } from '../../searchable-repository-contracts';
+import {
+  SearchParams,
+  SearchResult,
+} from '../../searchable-repository-contracts';
 
 describe('SearchableRepositoryContracts Unit Tests', () => {
   describe('SearchParams tests', () => {
@@ -128,6 +131,31 @@ describe('SearchableRepositoryContracts Unit Tests', () => {
 
       params.forEach(i => {
         expect(new SearchParams({ filter: i.filter }).filter).toBe(i.expected);
+      });
+    });
+  });
+
+  describe('SearchResult tests', () => {
+    it('constuctor props', () => {
+      const searchResult = new SearchResult({
+        items: ['item1', 'item2', 'item3', 'item4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        sort: null,
+        sortDir: null,
+        filter: null,
+      });
+
+      expect(searchResult.toJSON()).toStrictEqual({
+        items: ['item1', 'item2', 'item3', 'item4'],
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        lastPage: 2,
+        sort: null,
+        sortDir: null,
+        filter: null,
       });
     });
   });
