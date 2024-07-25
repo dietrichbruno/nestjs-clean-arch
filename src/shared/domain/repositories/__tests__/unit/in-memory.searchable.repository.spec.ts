@@ -64,7 +64,34 @@ describe('InMemoryRepository unit tests', () => {
     });
   });
 
-  describe('applySort method', () => {});
+  describe('applySort method', () => {
+    it('Should no sort items', async () => {
+      const items = [
+        new StubEntity({ name: 'b', price: 10 }),
+        new StubEntity({ name: 'a', price: 10 }),
+      ];
+
+      let itemsSorted = await sut['applySort'](items, null, null);
+      expect(itemsSorted).toStrictEqual(items);
+
+      itemsSorted = await sut['applySort'](items, 'price', 'asc');
+      expect(itemsSorted).toStrictEqual(items);
+    });
+
+    it('Should sort items', async () => {
+      const items = [
+        new StubEntity({ name: 'b', price: 10 }),
+        new StubEntity({ name: 'a', price: 10 }),
+        new StubEntity({ name: 'c', price: 10 }),
+      ];
+
+      let itemsSorted = await sut['applySort'](items, 'name', 'asc');
+      expect(itemsSorted).toStrictEqual([items[1], items[0], items[2]]);
+
+      itemsSorted = await sut['applySort'](items, 'name', 'desc');
+      expect(itemsSorted).toStrictEqual([items[2], items[0], items[1]]);
+    });
+  });
 
   describe('applyPaginate method', () => {});
 
