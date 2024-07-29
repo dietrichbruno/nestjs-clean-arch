@@ -18,8 +18,17 @@ describe('BcryptjsProvider', () => {
     const password = 'TestPassword123';
     const hash = await sut.generateHash(password);
 
+    const match = await sut.compareHash('fake', hash);
+
+    expect(match).toBeFalsy();
+  });
+
+  it('should return true if password match', async () => {
+    const password = 'TestPassword123';
+    const hash = await sut.generateHash(password);
+
     const match = await sut.compareHash(password, hash);
 
-    expect(match).toBe(true);
+    expect(match).toBeTruthy();
   });
 });
