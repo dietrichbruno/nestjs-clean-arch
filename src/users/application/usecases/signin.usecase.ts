@@ -1,13 +1,12 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
-import { UserEntity } from '@/users/domain/entities/user.entity';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { UserOutput, UserOutputMapper } from '../dtos/user-output';
 import { UseCase as DefaultUseCase } from '@/shared/application/use-case';
 import { InvalidCredentials } from '@/shared/application/errors/invalid-credentials';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace SignupUseCase {
+export namespace SigninUseCase {
   export type Input = {
     email: string;
     password: string;
